@@ -1,0 +1,50 @@
+<!-- about-us.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} About Us - ProCric {% endblock title %}
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+{% block content %}
+<section class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 p-0">
+            <div class="card bg-dark text-white" style="background-image: url('{% static 'img/cricket_ball3.jpg' %}'); background-size: cover; height: 100vh;">
+                <div class="card-body d-flex align-items-end">
+                    <div class="container">
+                        <h4 class="font-weight-bolder text-white">Developed by Faizan Ali Shah and Abdul Khan</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="card bg-dark mb-4 text-white rounded-bottom">
+                <div class="card-header pb-0 text-left">
+                    <h4 class="font-weight-bolder mb-3">About ProCric</h4>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="container text-dark">
+                        <p class="mb-4">
+                            ProCric is an “all in one” cricket management website that simplifies the management of players, teams, matches, and cricket tournaments.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="container text-dark">
+                        <h5 class="font-weight-bolder mb-3">Key Features:</h5>
+                        <ul>
+                            <li>Register and manage user accounts.</li>
+                            <li>Create and manage cricket teams, including player roster information.</li>
+                            <li>Schedule, record, and manage cricket matches.</li>
+                            <li>Organize and administer cricket tournaments.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

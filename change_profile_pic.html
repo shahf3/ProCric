@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Change Profile Picture - ProCric{% endblock title %}
+
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 bg-white p-4 rounded shadow">
+
+            <h2 class="text-center mb-4">Change Profile Picture</h2>
+
+            <!-- Display the current profile picture -->
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Current Profile Picture" class="img-fluid mb-3 mx-auto d-block">
+            {% endif %}
+
+            <form method="post" action="{% url 'upload_profile_pic' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary btn-block mt-3">Change Profile Picture</button>
+            </form>
+        </div>
+    </div>
+</div>
+    <!-- <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    
+        Dropzone.autoDiscover = false;
+        var myDropzone = new Dropzone("#dropzone", {
+            url: "{% url 'upload_profile_pic' %}",
+            headers: {
+                "X-CSRFToken": getCookie('csrftoken'),
+            },
+            paramName: "profile_image",
+            maxFiles: 1,
+            acceptedFiles: "image/*",
+            addRemoveLinks: true,
+            init: function () {
+                this.on("success", function (file, response) {
+                    console.log(response);
+                    showSuccessPopup();
+                });
+    
+                this.on("error", function (file, errorMessage) {
+                    console.log(errorMessage);
+                });
+            }
+        });
+    
+        document.getElementById("submit-profile-pic").addEventListener("click", function () {
+            myDropzone.processQueue();
+        });
+    
+        function showSuccessPopup() {
+
+        alert("Profile picture has been changed successfully");
+
+        window.location.href = "{% url 'my_profile' %}";
+    }
+    </script> -->
+
+{% endblock content %}

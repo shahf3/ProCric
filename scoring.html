@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Cricket Match Scoring - ProCric {% endblock title %}
+
+{% block body %}
+    class="scoring-page" 
+{% endblock body %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Cricket Match Scoring</h1>
+
+    {% if not match_completed %}
+        {% if not innings_over %}
+            <form id="overs-form" class="mb-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="overs" class="form-label">Number of Overs:</label>
+                    <input type="number" id="overs-input" class="form-control" required>
+                </div>
+                <button type="button" onclick="startMatch()" class="btn btn-primary">Start Match</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+
+    <div id="live-scoring" style="display: none;">
+        <h2 class="text-center mb-3" id="inning_type">1st Innings</h2>
+        <p class="text-center">Total amount of overs: <span id="total-overs"></span></p>
+        <p class="text-center" id="overs-info">Overs: 0.0</p>
+        <p class="text-center" id="wickets-info">Wickets: 0</p>
+        <p class="text-center" id="score-info">Score: 0/0</p>
+
+        <div class="text-center mb-3">
+            <!-- Buttons for scoring options -->
+            <button type="button" class="btn btn-primary" onclick="scoreRun(0)">Dot Ball</button>
+            <button type="button" class="btn btn-primary" onclick="scoreRun(1)">1 Run</button>
+            <button type="button" class="btn btn-primary" onclick="scoreRun(2)">2 Runs</button>
+            <button type="button" class="btn btn-primary" onclick="scoreRun(3)">3 Runs</button>
+            <button type="button" class="btn btn-primary" onclick="scoreBoundary()">Boundary</button>
+            <button type="button" class="btn btn-primary" onclick="scoreSix()">Six Runs</button>
+        </div>
+
+        <div class="text-center mb-3">
+            <!-- Buttons for scoring options (Wide and No Ball) -->
+            <button type="button" class="btn btn-warning" onclick="scoreWide()">Wide</button>
+            <button type="button" class="btn btn-danger" onclick="scoreNoBall()">No Ball</button>
+        </div>
+
+        <div class="text-center mb-3">
+            <!-- Button for Wicket -->
+            <button type="button" class="btn btn-info" onclick="wicket()">Wicket</button>
+        </div>
+    </div>
+
+    {% if match_completed %}
+        <h2 class="text-center">Match Result</h2>
+        <p class="text-center">{{ winner_team }} won the match!</p>
+    {% endif %}
+</div>
+
+<script>
+    var score = 0;
+    var wickets = 0;
+    var overs = 0;
+    var innings_over = '{{ innings_over }}';
+    var start2ndInningsButton;
+    var innings = 1;
+    var winner;
+    var firstInningsScore = 0;
+    var tournament_id = '{{ form.tournament_id }}';
+    var match_id = '{{ form.match_id }}';
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Check if the cookie name matches the requested name
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    function startMatch() {
+        // Get the total overs from the input
+        var totalOvers = document.getElementById('overs-input').value;
+        // Save total overs locally in JavaScript
+        innings_over = totalOvers;
+
+        // Toggle visibility of elements
+        document.getElementById('overs-form').style.display = 'none';
+        document.getElementById('live-scoring').style.display = 'block';
+
+        // Display the total overs in the corresponding element
+        document.getElementById('total-overs').innerText = totalOvers;
+
+        // Enable scoring buttons
+        enableButtons();
+    }
+
+
+    function wicket() {
+        // Update wickets
+        wickets += 1;
+
+        
+        updateLiveScore();
+    }
+    function scoreRun(run) {
+ 
+        score += run;
+        overs += 0.1;
+
+        
+        updateLiveScore();
+    }
+
+    function scoreBoundary() {
+
+        score += 4;
+        overs += 0.1;
+
+        
+        updateLiveScore();
+    }
+
+    function scoreSix() {
+
+        score += 6;
+        overs += 0.1;
+
+        
+        updateLiveScore();
+    }
+
+    function scoreWide() {
+
+        score += 1;
+
+        
+        updateLiveScore();
+    }
+
+    function scoreNoBall() {
+        
+        updateLiveScore();
+    }
+
+    function updateLiveScore() {
+        console.log('Innings: ' + innings + ', Score: ' + score + ', Wickets: ' + wickets + ', Overs: ' + overs.toFixed(1));
+        if (overs % 1 >= 0.6) {
+            overs = Math.ceil(overs);
+        }
+        if (overs >= innings_over || wickets >= 10){
+            endInnings(innings);
+            innings += 1;
+            if (innings == 3) {
+            console.log('Match has ended');
+            winner = 'Team 1';
+            updateStatistics(winner);
+        }
+        }
+        if (innings === 2 && score > firstInningsScore) {
+            endInnings(innings);
+            winner = 'Team 2';
+            document.getElementById('score-info').innerText = 'Team 2 has won!';
+            console.log('Team 2 has won!');
+            disableButtons(innings);
+            updateStatistics(winner)
+        }
+        document.getElementById('score-info').innerText = 'Score: ' + score + '/' + wickets;
+        document.getElementById('overs-info').innerText = 'Overs: ' + overs.toFixed(1);
+        document.getElementById('wickets-info').innerText = 'Wickets: ' + wickets;
+    }
+    function endInnings(innings) {
+        console.log('End of Innings ' + innings);
+        disableButtons(innings);
+        firstInningsScore = score;   
+
+        console.log('First Innings Score: ' + firstInningsScore);
+        if (innings === 1) {
+            var buttonContainer = document.getElementById('live-scoring');
+            var start2ndInningsButton = document.createElement('button');
+            start2ndInningsButton.className = 'btn btn-primary';
+            start2ndInningsButton.innerText = 'Start 2nd Innings';
+            start2ndInningsButton.onclick = function () {
+                start2ndInnings();
+                start2ndInningsButton.style.display = 'none';
+            };
+            buttonContainer.appendChild(start2ndInningsButton);
+        }
+        
+    }
+    function start2ndInnings() {
+        console.log('Start of 2nd Innings');
+ 
+        score = 0;
+        wickets = 0;
+        overs = 0;
+        document.getElementById('inning_type').innerText = '2nd Innings';
+        document.getElementById('score-info').innerText = 'Score: 0/0';
+        document.getElementById('overs-info').innerText = 'Overs: 0.0';
+        document.getElementById('wickets-info').innerText = 'Wickets: 0';
+        enableButtons('2');
+    }
+
+    function disableButtons(innings) {
+        var buttons = document.querySelectorAll('.btn-primary');
+        buttons.forEach(function (button) {
+            button.disabled = true;
+        });
+
+        document.querySelector('.btn-warning').disabled = true; // Wide
+        document.querySelector('.btn-danger').disabled = true;  // No Ball
+        document.querySelector('.btn-info').disabled = true;    // Wicket
+    }
+
+    function enableButtons(innings) {
+        var buttons = document.querySelectorAll('.btn-primary');
+        buttons.forEach(function (button) {
+            button.disabled = false;
+        });
+        document.querySelector('.btn-warning').disabled = false; // Wide
+        document.querySelector('.btn-danger').disabled = false;  // No Ball
+        document.querySelector('.btn-info').disabled = false;    // Wicket
+    }
+
+    function updateStatistics(winner) {
+
+        fetch(`/tournament/${tournament_id}/scoring/${match_id}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'), 
+            },
+            body: JSON.stringify({ winner: winner }),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            console.log('Statistics updated successfully');
+        })
+        .catch(error => {
+            console.error('Error updating statistics:', error);
+        });
+}
+
+</script>
+
+{% endblock content %}

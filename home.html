@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} ProCric {% endblock title %}
+
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+
+{% block content %}
+
+<header class="header-2">
+  <div class="page-header min-vh-75 relative" style="background-image: url('{% static 'img/cricket_ball4.jpg' %}')">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-7 text-center mx-auto">
+                  <div class="row">
+                      <div class="col-lg-9 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
+                          <div class="row">
+                              <div class="p-3 text-center">
+                                  <h1 class="mt-3">ProCric</h1>
+                                  <br>
+                                  <p class="text-sm">The ultimate webapp to manage your cricket season</p>
+                              </div>
+                              {% if user.is_authenticated %}
+                              <div class="col-md-4 d-flex justify-content-between align-items-center col-lg-9 z-index-2 border-radius-xl mx-auto py-3">
+                                <a href="{% url 'my_profile' %}" class="btn btn-primary btn-login w-100 btn-lg btn-warning">My Profile</a>
+                              </div>
+                            {% else %}
+                              <div class="col-md-4 d-flex justify-content-between align-items-center col-lg-9 z-index-2 border-radius-xl mx-auto py-3">
+                                <!-- Login Button -->
+                                <div class="px-1">
+                                  <a href="{% url 'login' %}" class="btn btn-primary btn-login w-100 btn-lg">Login</a>
+                                </div>
+                                <!-- Register Button -->
+                                <div class="px-1">
+                                  <a href="{% url 'register' %}" class="btn btn-primary btn-register w-100 btn-lg">Register</a>
+                                </div>
+                              </div>
+                            {% endif %}
+                            
+                            </div>
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+          <div class="position-absolute w-100 z-index-1 bottom-0">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="moving-waves">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+            </g>
+            </svg>
+          </div>
+      </div>
+      </div>
+    </div>
+    
+  </header>
+  
+  <section class="pt-3 pb-4" id="count-stats">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
+          <div class="row">
+            <div class="col-md-4 position-relative">
+              <div class="p-3 text-center">
+                <h1 class="text-gradient text-primary">28+</h1>
+                <h5 class="mt-3">Cricket Managers</h5>
+                <p class="text-sm">Organising their cricket season using ProCric</p>
+              </div>
+              <hr class="vertical dark">
+            </div>
+            <div class="col-md-4 position-relative">
+              <div class="p-3 text-center">
+                <h1 class="text-gradient text-primary"> <span id="state2" countTo="15">50%</span>+</h1>
+                <h5 class="mt-3">More Efficient</h5>
+                <p class="text-sm">Than managing the team without ProCric</p>
+              </div>
+              <hr class="vertical dark">
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 text-center">
+                <h1 class="text-gradient text-primary" id="state3" countTo="4">100%</h1>
+                <h5 class="mt-3">Digital</h5>
+                <p class="text-sm">Enjoy cricket games all digital</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer pt-1 mt-1">
+    <hr class="horizontal dark mb-5">
+    <div class="container">
+      <div class=" row">
+        <div class="col-md-3 mb-4 ms-auto">
+          <div>
+            <h6 class="text-gradient text-primary font-weight-bolder">ProCric</h6>
+          </div>
+          <div>
+            <h6 class="mt-3 mb-2 opacity-8">DCU Third Year Project</h6>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4">
+          <div>
+            <h6 class="text-gradient text-primary text-sm">Authors</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="about-us" rel="noopener">
+                  About Us
+                </a>
+              </li>  
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4">
+          <div>
+            <h6 class="text-gradient text-primary text-sm">Help &amp; Support</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="about-us" rel="noopener">
+                  Contact Us
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4 me-auto">
+          <div>
+            <h6 class="text-gradient text-primary text-sm">Legal</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="references" rel="noopener">
+                  References
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="text-center">
+            <p class="my-4 text-sm">
+              © <a href="https://gitlab.computing.dcu.ie/khana9/2024-ca326-akhan-procric" rel="noopener">Abdul and Faizan</a> - DCU 3YP 2024 - Created with Django and Bootstrap 5
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+{% endblock content %}

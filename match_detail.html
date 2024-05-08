@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Details</title>
+</head>
+<body>
+    <h2>Match Details</h2>
+    <p><strong>Tournament:</strong> {{ match.tournament }}</p>
+    <p><strong>Teams:</strong> {{ match.team1 }} vs {{ match.team2 }}</p>
+    <p><strong>Date & Time:</strong> {{ match.date_time }}</p>
+    <p><strong>Location:</strong> {{ match.location }}</p>
+    <p><strong>Winner:</strong> {% if match.winner %}{{ match.winner }}{% else %}Not decided yet{% endif %}</p>
+</body>
+</html>

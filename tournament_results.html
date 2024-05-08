@@ -1,0 +1,53 @@
+<!-- tournament_results.html -->
+{% extends 'base.html' %}
+{% block title %}Tournament Results{% endblock title %}
+{% block content %}
+{% load mathfilters %}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Tournament Results</h2>
+
+                    {% if tournament.finalized %}
+                        <div class="row mt-3">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Team</th>
+                                            <th>Won</th>
+                                            <th>Lost</th>
+                                            <th>Draw</th>
+                                            <th>Points</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for team_statistic in team_statistics_data %}
+                                        <tr>
+                                            <td>{{ team_statistic.team.name }}</td>
+                                            <td>{{ team_statistic.won }}</td>
+                                            <td>{{ team_statistic.lost }}</td>
+                                            <td>{{ team_statistic.draw }}</td>
+                                            <td>{{ team_statistic.won|mul:2 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <a href="{% url 'tournament_details' tournament.id %}" class="btn btn-primary">Go Back</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>The tournament results will be available after finalization.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

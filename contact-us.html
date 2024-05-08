@@ -1,0 +1,46 @@
+<!-- contact-us.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Contact Us - ProCric {% endblock title %}
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+{% block content %}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header pb-0 text-left">
+                    <h4 class="font-weight-bolder">Contact Us</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'contact_us' %}" style="max-width: 400px; margin: auto;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_subject" class="form-label" style="font-weight: bold;">Subject:</label>
+                            {{ form.subject }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_message" class="form-label" style="font-weight: bold;">Message:</label>
+                            {{ form.message }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_from_email" class="form-label" style="font-weight: bold;">Your Email:</label>
+                            {{ form.from_email }}
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                    <p style="margin-top: 20px;">
+                        If you have any questions or need assistance, feel free to contact us via email or phone.
+                    </p>
+                    <ul>
+                        <li>Email Faizan Ali Shah: <a href="mailto:faizan.shah3@mail.dcu.ie">faizan.shah3@mail.dcu.ie</a></li>
+                        <li>Email Abdul Khan: <a href="mailto:abdul.khan9@mail.dcu.ie">abdul.khan9@mail.dcu.ie</a></li>
+                        <li>Phone Faizan Ali Shah: 087 3646123</li>
+                        <li>Phone Abdul Khan: 089 0124537</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
